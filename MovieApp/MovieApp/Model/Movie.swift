@@ -56,18 +56,42 @@ extension MovieAppRequestModels {
     struct FetchMovie: Codable {
         private let apiKey: String
         private let keyword: String
+        private let language: String
+        private let page: Int
+        private let includeAdult: String
+        private let region: String?
+        private let year: Int?
+        private let primaryReleaseYear: String?
         
         enum CodingKeys: String, CodingKey {
             case apiKey = "api_key"
             case keyword = "query"
+            case language = "language"
+            case page = "page"
+            case includeAdult = "include_adult"
+            case region = "region"
+            case year = "year"
+            case primaryReleaseYear = "primary_release_year"
         }
         
         init(
             apiKey: String,
-            keyword: String
+            keyword: String,
+            language: String = "en-US",
+            page: Int = 1,
+            includeAdult: String = "false",
+            region: String? = nil,
+            year: Int? = nil,
+            primaryReleaseYear: String? = nil
         ) {
             self.apiKey = apiKey
             self.keyword = keyword
+            self.language = language
+            self.page = page
+            self.includeAdult = includeAdult
+            self.region = region
+            self.year = year
+            self.primaryReleaseYear = primaryReleaseYear
         }
     }
     

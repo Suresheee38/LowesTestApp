@@ -7,7 +7,7 @@
 
 import Foundation
 protocol MoviesSearchViewPresenting {
-    func fetchMovies()
+    func fetchMovies(for keyword: String?)
     func didSelect(atIndex: IndexPath)
     var movie: Movie? { get set }
     var config: Config? { get set }
@@ -44,9 +44,12 @@ final class MoviesSearchViewPresenter {
 
 ///MARK:- MoviesSearchViewPresenting Methods
 extension MoviesSearchViewPresenter: MoviesSearchViewPresenting {
-    func fetchMovies() {
+    func fetchMovies(for keyword: String?) {
+        guard let keyword = keyword, !keyword.isEmpty else {
+            return
+        }
         view?.showLoading()
-        interactor.getMoviesAndConfig { [weak self] movie, config in
+        interactor.getMoviesAndConfig(for: keyword) { [weak self] movie, config in
             guard let strongSelf = self else {
                 return
             }

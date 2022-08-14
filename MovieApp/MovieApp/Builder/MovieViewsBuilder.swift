@@ -24,7 +24,7 @@ class MovieViewsBuilder: MovieViewsBuilding {
     
     private enum Constants {
         static let moviesSearchViewControllerId = "MoviesSearchViewController"
-        static let moviesDetailViewControllerId = "DetailsViewController"
+        static let moviesDetailViewControllerId = "MovieDetailsViewController"
     }
     
     private lazy var appStoryBoard: UIStoryboard = {
@@ -52,7 +52,7 @@ class MovieViewsBuilder: MovieViewsBuilding {
     
     /// Details View
     func buildMoviesSearchDetailsComponent(with dependency: Dependency) -> UIViewController? {
-        let viewController = appStoryBoard.instantiateViewController(withIdentifier: Constants.moviesDetailViewControllerId) as? DetailsViewController
+        let viewController = appStoryBoard.instantiateViewController(withIdentifier: Constants.moviesDetailViewControllerId) as? MovieDetailsViewController
         viewController?.presenter = MovieDetailViewPresenter(
             view: viewController,
             router: routing,

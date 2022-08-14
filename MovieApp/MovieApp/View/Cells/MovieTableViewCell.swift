@@ -36,7 +36,7 @@ extension MovieTableViewCell: CellViewModel {
         }
         let result = model.results[indexpath.row]
         titleLabel.text = result.originalTitle
-        descriptionLabel.text = result.releaseDate
+        descriptionLabel.text = result.releaseDate?.getFormattedDate() ?? ""
         ratingLabel.text = "\(result.voteAverage ?? 0)"
     }
 }

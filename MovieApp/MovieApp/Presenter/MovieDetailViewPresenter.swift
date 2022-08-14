@@ -55,7 +55,7 @@ final class MovieDetailViewPresenter: MoviesDetailViewPresenting {
     
     /// Movie release date
     var movieReleaseDate: String {
-        return dependency.movieResult.releaseDate ?? ""
+        return dependency.movieResult.releaseDate?.getFormattedDate() ?? ""
     }
     
     /// Image path

@@ -8,17 +8,21 @@
 import XCTest
 @testable import MovieApp
 
+
+let mockMovie =  Movie(page: 0, results: [MovieResult(adult: false, backdropPath: nil, genreIDS: nil, id: 0, originalLanguage: "en-US", originalTitle: "title", overview: "overview", popularity: 0.0, posterPath: "https://someurl", releaseDate: "", title: "", video: true, voteAverage: 0.0, voteCount: 0)], totalPages: 0, totalResults: 0)
+let mockConfig = Config(images: Images(baseURL: "https://someurl", secureBaseURL: "https://someSecureurl", backdropSizes: ["original"], logoSizes: [], posterSizes: [], profileSizes: [], stillSizes: []), changeKeys: [])
+
 class MovieSearchViewTests: XCTestCase {
 
     var presenter: MoviesSearchViewPresenter!
     var router: MockRouter!
-    var interactor: MockInteractor!
-    var view: MockView!
+    var interactor: MockSearchViewInteractor!
+    var view: MockSearchView!
 
     override func setUpWithError() throws {
         router = MockRouter()
-        interactor = MockInteractor()
-        view = MockView()
+        interactor = MockSearchViewInteractor()
+        view = MockSearchView()
         presenter = MoviesSearchViewPresenter(
             view: view,
             router: router,
@@ -45,7 +49,7 @@ class MovieSearchViewTests: XCTestCase {
     
     func testInteractor() {
         // when
-        presenter.fetchMovies()
+        presenter.fetchMovies(for: "star wars")
         
         //then
         guard case .getMoviesAndConfig = interactor.calledMethods.first else {
@@ -55,9 +59,17 @@ class MovieSearchViewTests: XCTestCase {
         XCTAssert(interactor.calledMethods.first == .getMoviesAndConfig)
     }
     
+    func testInteractorWhenNoInputPassed() {
+        // when
+        presenter.fetchMovies(for: "")
+        
+        //then
+        XCTAssert(interactor.calledMethods.isEmpty)
+    }
+    
     func testView() {
         // when
-        presenter.fetchMovies()
+        presenter.fetchMovies(for: "star wars")
         
         //then
         guard case .showLoading = view.calledMethods.first else {
@@ -68,58 +80,3 @@ class MovieSearchViewTests: XCTestCase {
         XCTAssert(view.calledMethods.contains(.hideLoading))
     }
 }
-
-class MockRouter: MoviesAppRouting {
-    enum Methods {
-        case pushToDetails
-        case pop
-    }
-    
-    var calledMethods: [Methods] = []
-    
-    func pushToDetails(dependency: Dependency) {
-        calledMethods.append(.pushToDetails)
-    }
-    
-    func pop() {
-        calledMethods.append(.pop)
-    }
-}
-
-class MockInteractor: MoviesSearchInteracting {
-    enum Methods {
-        case getMoviesAndConfig
-    }
-    
-    var calledMethods: [Methods] = []
-    
-    func getMoviesAndConfig(completion: @escaping (Movie?, Config?) -> ()) {
-        calledMethods.append(.getMoviesAndConfig)
-        completion(mockMovie, mockConfig)
-    }
-}
-
-class MockView: MovieSearchViewing {
-    enum Methods {
-        case loadData
-        case showLoading
-        case hideLoading
-    }
-    
-    var calledMethods: [Methods] = []
-    
-    func loadData() {
-        calledMethods.append(.loadData)
-    }
-    
-    func showLoading() {
-        calledMethods.append(.showLoading)
-    }
-    
-    func hideLoading() {
-        calledMethods.append(.hideLoading)
-    }
-}
-
-let mockMovie =  Movie(page: 0, results: [MovieResult(adult: false, backdropPath: nil, genreIDS: nil, id: 0, originalLanguage: "en-US", originalTitle: "", overview: "", popularity: 0.0, posterPath: "", releaseDate: "", title: "", video: true, voteAverage: 0.0, voteCount: 0)], totalPages: 0, totalResults: 0)
-let mockConfig = Config(images: Images(baseURL: "", secureBaseURL: "", backdropSizes: [], logoSizes: [], posterSizes: [], profileSizes: [], stillSizes: []), changeKeys: [])

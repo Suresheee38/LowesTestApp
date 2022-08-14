@@ -1,5 +1,5 @@
 //
-//  DetailsViewController.swift
+//  MovieDetailsViewController.swift
 //  MovieApp
 //
 //  Created by Suresh kumar Vijayakumar on 8/13/22.
@@ -12,7 +12,7 @@ protocol MovieDetailViewing: AnyObject {
     func loadViews()
 }
 
-final class DetailsViewController: UIViewController {
+final class MovieDetailsViewController: UIViewController {
 
     @IBOutlet private weak var horizontalStackView: UIStackView!
     @IBOutlet private weak var releaseDateLabel: UILabel!
@@ -29,7 +29,7 @@ final class DetailsViewController: UIViewController {
 }
 
 /// MARK:- MovieDetailViewing Methods
-extension DetailsViewController: MovieDetailViewing {
+extension MovieDetailsViewController: MovieDetailViewing {
     func loadViews() {
        movieTitleLabel.text = presenter.movieTitle
        releaseDateLabel.text = presenter.movieReleaseDate

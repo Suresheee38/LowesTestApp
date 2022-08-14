@@ -14,8 +14,8 @@ protocol MoviesAppRouting {
 }
 
 protocol Navigatable {
-    func pushViewControllerNavigatable(_ viewController: UIViewController, animated: Bool)
-    func popViewControllerNavigatable(animated: Bool)
+    func show(_ viewController: UIViewController, animated: Bool)
+    func pop(animated: Bool)
 }
 
 ///
@@ -37,21 +37,10 @@ extension MovieSearchRouter: MoviesAppRouting {
         guard let viewController = builder.buildMoviesSearchDetailsComponent(with: dependency) else {
             return
         }
-        navigation.pushViewControllerNavigatable(viewController, animated: true)
+        navigation.show(viewController, animated: true)
     }
     
     func pop() {
-        navigation.popViewControllerNavigatable(animated: true)
-    }
-}
-
-///MARK:- Navigatable Methods
-extension UINavigationController: Navigatable {
-    func popViewControllerNavigatable(animated: Bool) {
-        popViewController(animated: animated)
-    }
-    
-    func pushViewControllerNavigatable(_ viewController: UIViewController, animated: Bool) {
-        pushViewController(viewController, animated: true)
+        navigation.pop(animated: true)
     }
 }

@@ -8,7 +8,10 @@
 import Foundation
 
 protocol MoviesSearchInteracting {
-    func getMoviesAndConfig(completion: @escaping (Movie?, Config?) -> ())
+    func getMoviesAndConfig(
+        for key: String,
+        completion: @escaping (Movie?, Config?) -> ()
+    )
 }
 
 ///
@@ -24,11 +27,14 @@ struct MovieSearchInteractor: MoviesSearchInteracting {
     }
     
     /// Fetch Movies
-    private func movies(fetch: @escaping MoviesAPICompletionType) {
+    private func movies(
+        for key: String,
+        fetch: @escaping MoviesAPICompletionType
+    ) {
         services.fetchmovies(
             with: MovieAppRequestModels.FetchMovie(
                 apiKey: "5885c445eab51c7004916b9c0313e2d3",
-                keyword: "Star wars"
+                keyword: key
             )
         ) { result in
             fetch(result)
@@ -51,13 +57,16 @@ struct MovieSearchInteractor: MoviesSearchInteracting {
     /// Load Movie details page
     /// 
 
-    func getMoviesAndConfig(completion: @escaping (Movie?, Config?) -> ()) {
+    func getMoviesAndConfig(
+        for key: String,
+        completion: @escaping (Movie?, Config?) -> ()
+    ) {
         var movie: Movie?
         var configuration: Config?
         
         let group = DispatchGroup()
         group.enter()
-        movies { result in
+        movies(for: key) { result in
             movie = try? result.get()
             group.leave()
         }
