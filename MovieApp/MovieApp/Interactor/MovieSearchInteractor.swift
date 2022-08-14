@@ -20,6 +20,11 @@ protocol MoviesSearchInteracting {
 ///
 
 struct MovieSearchInteractor: MoviesSearchInteracting {
+    
+    private enum Constants {
+        static let apiKey = "5885c445eab51c7004916b9c0313e2d3"
+    }
+    
     let services: MovieAppRepositoryCallable
     
     init(services: MovieAppRepositoryCallable) {
@@ -33,7 +38,7 @@ struct MovieSearchInteractor: MoviesSearchInteracting {
     ) {
         services.fetchmovies(
             with: MovieAppRequestModels.FetchMovie(
-                apiKey: "5885c445eab51c7004916b9c0313e2d3",
+                apiKey: Constants.apiKey,
                 keyword: key
             )
         ) { result in
@@ -45,7 +50,7 @@ struct MovieSearchInteractor: MoviesSearchInteracting {
     private func config(fetch: @escaping ConfigAPICompletionType) {
         services.fetchConfig(
             with: MovieAppRequestModels.FetchConfig(
-                apiKey: "5885c445eab51c7004916b9c0313e2d3"
+                apiKey: Constants.apiKey
             )
         ) { result in
             fetch(result)
